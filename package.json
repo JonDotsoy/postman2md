@@ -3,9 +3,7 @@
   "version": "0.1.1",
   "description": "Postman Collection 2.0 to markdown",
   "main": "./src/read-postman-collection.js",
-  "bin": {
-    "postman2md": "./src/bin.js"
-  },
+  "bin": "./src/cli.js",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
