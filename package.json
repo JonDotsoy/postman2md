@@ -1,6 +1,6 @@
 {
   "name": "postman2md",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Postman Collection 2.0 to markdown",
   "main": "./src/read-postman-collection.js",
   "bin": "./src/cli.js",
