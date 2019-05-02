@@ -1,0 +1,771 @@
+{
+	"info": {
+		"_postman_id": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+		"name": "SMU Unimarc Auth Service",
+		"description": "abc Auth...",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "Register with Firebase",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "023de265-7c11-48af-8ba2-3efa7d84777c",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );",
+									"    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "application/json",
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"grant_type\": \"firebase\",\n\t\"id_token\": \"{{firebase_id_token}}\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/authorize",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"authorize"
+							]
+						},
+						"description": "Require a `id_token` from firebase auth to register an user.\n\nThis return an `access_token` and a `refresh_token`.\n\n*warning*: this endpoint revoke the firebase refresh token."
+					},
+					"response": [
+						{
+							"name": "Register with Firebase Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "application/json",
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"grant_type\": \"firebase\",\n\t\"id_token\": \"{{firebase_id_token}}\"\n}\n"
+								},
+								"url": {
+									"raw": "{{HOST}}/auth/authorize",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"auth",
+										"authorize"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1587"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"633-YijtjlyQxwGelTdWeAxX7t765LE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Apr 2019 15:11:13 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2M2NjVjMmM5YzEwZTAwMTFkM2E0NDAiLCJzY29wZSI6IiIsInNlc3Npb25JZCI6IjYxNDAzMWE3LTgwODItNGI3Ny04MzcxLTEwMjM2OWNkNWY1MiIsImRhdGEiOnsibmFtZSI6IkpBY29uIHJpYmVyYSIsImZpcmViYXNlVUlEIjoibjV2a1Rpd3hCUFhBajNrYThBa3RxNnBXZzRrMSJ9LCJyZWZyZXNoQXQiOjE1NTY1NTA2NzM1OTQsImNyZWF0ZWRBdCI6IjIwMTktMDQtMjlUMTU6MTE6MTMuNTk0WiIsImlhdCI6MTU1NjU1MDY3MywiZXhwIjoxNTU2NTU0MjczLCJzdWIiOiJhY2Nlc3NfdG9rZW4ifQ.H2uk5cjS3e_02K5c7fAbJbk3hllmYBp8361QoX77Kt4rCZxqNcAuNQG3BHZRZtMtYjw1IO98se6QOwfgpmRCx72xqwumV7L-PDwkvxw0qMcmZxdX1TST2kbf0srZ9iw9TsIdpENlgEeDIgzvUpgiWb_KMFCRIOaFSCGekkJY_LmmbhgdFY2ooxXkaQ-PS3sfVt7s5fze8Fyd4w3sm-xWBNFQncu5tg8NA6d-gag27Mn4v2wqEDTCLYnQeId5Ou41CsaEXdLtzi9ptrt_OlV4JxFSDH3HNnmBD5yEqcCjjUJgPmMg6Stqplq7wybuLCAzSfyTtER3AgnVzbQ0UzQXxw\",\n    \"refresh_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2M2NjVjMmM5YzEwZTAwMTFkM2E0NDAiLCJzZXNzaW9uSWQiOiI2MTQwMzFhNy04MDgyLTRiNzctODM3MS0xMDIzNjljZDVmNTIiLCJzY29wZSI6IiIsImRhdGEiOnsibmFtZSI6IkpBY29uIHJpYmVyYSIsImZpcmViYXNlVUlEIjoibjV2a1Rpd3hCUFhBajNrYThBa3RxNnBXZzRrMSJ9LCJyZWZyZXNoQXQiOjE1NTY1NTA2NzM1OTQsImNyZWF0ZWRBdCI6IjIwMTktMDQtMjlUMTU6MTE6MTMuNTk0WiIsImlhdCI6MTU1NjU1MDY3MywiZXhwIjoxNTU4OTY5ODczLCJzdWIiOiJyZWZyZXNoX3Rva2VuIn0.i4S3iMlByI6NiBSwNvunuy2uxIf1VJvKBRPVsqhAf1gKacV0vL5ZgDiVWeDG3i3JGfuv8bXeSzaHwpf4vUvckI58fL_A-56YkDhxsmeTF4BCskloJBojdOG7wvYxl13_FN3QXhHN0It9DFYbO4WL2_yJFc7oAt6egVpKn5kSa4knNmvPGlktThuxwBEaaC1aQ0mmpiHQhDDFc5xoVgx6yc5W4gsu1i-EaXBQiJUz9MGNH7tyRYUhg6csz01OndKCE8ptS9qUu1YTEoQ27KSgAcao2Vl28x7tL-wfrWrMWVh9T7Hj0Yt7IPiAgPx5ktLsHSiFCfpDSKEhh9FpRn6jrQ\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "66fea7d4-d778-4848-9a1a-15b9e6fedb44",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );",
+									"    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"grant_type\": \"refresh_token\",\n    \"refresh_token\": \"{{REFRESH_TOKEN}}\"\n}"
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/token/refresh",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"token",
+								"refresh"
+							]
+						},
+						"description": "Allows the re-creation of a valid access token, invalidating the previous refresh token."
+					},
+					"response": [
+						{
+							"name": "Refresh Token Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"grant_type\": \"refresh_token\",\n    \"refresh_token\": \"{{REFRESH_TOKEN}}\"\n}"
+								},
+								"url": {
+									"raw": "{{HOST}}/auth/token/refresh",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"auth",
+										"token",
+										"refresh"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1587"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"633-aWgr+KmTUOnhvpfs0vuiRCtma9c\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Apr 2019 15:12:18 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2M2NjVjMmM5YzEwZTAwMTFkM2E0NDAiLCJzY29wZSI6IiIsInNlc3Npb25JZCI6IjYxNDAzMWE3LTgwODItNGI3Ny04MzcxLTEwMjM2OWNkNWY1MiIsImRhdGEiOnsibmFtZSI6IkpBY29uIHJpYmVyYSIsImZpcmViYXNlVUlEIjoibjV2a1Rpd3hCUFhBajNrYThBa3RxNnBXZzRrMSJ9LCJyZWZyZXNoQXQiOjE1NTY1NTA3Mzg4NTQsImNyZWF0ZWRBdCI6IjIwMTktMDQtMjlUMTU6MTE6MTMuNTk0WiIsImlhdCI6MTU1NjU1MDczOCwiZXhwIjoxNTU2NTU0MzM4LCJzdWIiOiJhY2Nlc3NfdG9rZW4ifQ.NaMaus0pXoOVGcfHSkCZG2-9YTVUtG7PX0nZnJzIYK_8SRQ14iQ7G6SkmMW2dKhIzeMfFOLKlSdde5Nj8iyXaysCRwDDDmKusUtzReYqF0rCfPmj698QdVUr882LSiEnT0slzIPGNC2ZYb90aBDLjTL3KTPI0RNPvaiukFHNw89e8OcFD9XhfEg0rlbKozbcOZucQX4LmtCBjoTQQcpqU7ukaBbyhwyOMYjAa1323rwC7qDmxsbrZDEcvIEudLCH2av9NQGX2asbQ09mKwurESaiJyyPMwa9wDa9RW_etV_YXhJ30W8QvFaOJewI5pMNe6k2WsNfZaM_Fl8AQ17wVg\",\n    \"refresh_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2M2NjVjMmM5YzEwZTAwMTFkM2E0NDAiLCJzZXNzaW9uSWQiOiI2MTQwMzFhNy04MDgyLTRiNzctODM3MS0xMDIzNjljZDVmNTIiLCJzY29wZSI6IiIsImRhdGEiOnsibmFtZSI6IkpBY29uIHJpYmVyYSIsImZpcmViYXNlVUlEIjoibjV2a1Rpd3hCUFhBajNrYThBa3RxNnBXZzRrMSJ9LCJyZWZyZXNoQXQiOjE1NTY1NTA3Mzg4NTQsImNyZWF0ZWRBdCI6IjIwMTktMDQtMjlUMTU6MTE6MTMuNTk0WiIsImlhdCI6MTU1NjU1MDczOCwiZXhwIjoxNTU4OTY5OTM4LCJzdWIiOiJyZWZyZXNoX3Rva2VuIn0.Ux-_TDcM_PKqeXkIWlDlN10xH8SxKA4ejLU5c1HJgx9lJEtFUKwUWy-UcmtAL4VZMp0mAZSQMMkS8CPDfn8t0zo-0rvmXRUXof1ssLDCn3t1eD8a6olXxI5vZOHQwQ6kmeiv7o47z5jxoF1dVW3MD4SoFkmoaarrQuQ-tDaatNUjBpRPYeFHpJWafKUoow44LZYxL74ISgHuM1b5MdajIc3P7eRXJIBpaTm1OWhpv1KHs8UwwxAWRFSeMOYJsDbcBcpqbWb-nJp-ABzoI85AFWI95lp6qQUkVT7VRnFmsILcm-i5Aefs_S0FmGwjKFUIsLjmWzhECErphQqiM-i2lg\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Test Token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST}}/auth/token/test",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"auth",
+								"token",
+								"test"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Test Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:4080/auth/token/test",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4080",
+									"path": [
+										"auth",
+										"token",
+										"test"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "196"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c4-KbV1IWvv9xtBLDo7y1/gghTl1v8\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 12 Apr 2019 15:32:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5cb0a14bbd62561a0f6662dd\",\n    \"userId\": \"5cb0a14bbd62561a0f6662dd\",\n    \"name\": \"Jonathan Delgado\",\n    \"firebaseUID\": \"n5vkTiwxBPXAj3ka8Aktq6pWg4k1\",\n    \"iat\": 1555079794,\n    \"exp\": 1555083394,\n    \"jti\": \"access_token\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Util",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST}}/health",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "It is used to inspect the state api service.\n\nThe parameter `status` returns `pass` if there is no problem. `warn` if there are momentary problems or it is unstable. and `fail` if the service is inaccessible."
+					},
+					"response": [
+						{
+							"name": "Health",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST}}/health",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"80-abfeDVxEtWeWq5kHyS1zNvKMnvI\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Apr 2019 15:58:05 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"pass\",\n    \"aliveAt\": 1556506406837,\n    \"timeAlive\": 47078669,\n    \"environment\": \"staging\",\n    \"db\": {\n        \"state\": \"connected\",\n        \"readyState\": 1\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get info user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{HOST}}/user/:userId",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get info user Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{HOST}}/user/:userId",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"user",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "me"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "179"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"b3-ISgp/buEpgWF+1HHCrs1ZZJvHdw\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Apr 2019 15:58:42 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5cc665c2c9c10e0011d3a440\",\n    \"name\": \"JAcon ribera\",\n    \"email\": \"jona@reigndesign.com\",\n    \"firebaseUID\": \"n5vkTiwxBPXAj3ka8Aktq6pWg4k1\",\n    \"__v\": 0,\n    \"birthdate\": \"1992-08-28T00:00:00.000Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update info user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"JAcon ribera\",\n\t\"birthdate\": \"1992-01-28\"\n}\n"
+						},
+						"url": {
+							"raw": "{{HOST}}/user/:userId",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "me"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update info user",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"JAcon ribera\",\n\t\"birthdate\": \"1992-01-28\"\n}\n"
+								},
+								"url": {
+									"raw": "{{HOST}}/user/:userId",
+									"host": [
+										"{{HOST}}"
+									],
+									"path": [
+										"user",
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "me"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "179"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"b3-ISgp/buEpgWF+1HHCrs1ZZJvHdw\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 29 Apr 2019 15:58:57 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"_id\": \"5cc665c2c9c10e0011d3a440\",\n    \"name\": \"JAcon ribera\",\n    \"email\": \"jona@reigndesign.com\",\n    \"firebaseUID\": \"n5vkTiwxBPXAj3ka8Aktq6pWg4k1\",\n    \"__v\": 0,\n    \"birthdate\": \"1992-08-28T00:00:00.000Z\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ab",
+			"item": [
+				{
+					"name": "ab",
+					"item": [
+						{
+							"name": "note",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "r",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a090dc5e-a7b8-44d6-8b3a-4948e0c16c90",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9790d8f6-cbbe-416b-abb8-783277edef20",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "e32fe2d0-28b3-4174-ba5c-d7486e73984e",
+			"key": "HOST",
+			"value": "http://localhost:4080",
+			"type": "string"
+		}
+	]
+}

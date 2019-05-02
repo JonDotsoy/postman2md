@@ -1,19 +1,9 @@
 // tslint:disable:max-line-length
 import { EOL } from 'os';
-import { Auth, Header, HttpsSchemaGetpostmanComJsonCollectionV210 as Col, Information, Item, Items1, Request } from './HttpsSchemaGetpostmanComJsonCollectionV210';
-
-const C = (bcol: any[]) => bcol && Buffer.concat(
-  bcol
-    .map((v) => {
-      if (Buffer.isBuffer(v)) return v;
-      if (typeof v === 'string') return Buffer.from(v);
-      if (Array.isArray(v)) {
-        const b: Buffer = C(v);
-        return b;
-      }
-    })
-    .filter(Boolean) as Buffer[],
-);
+import { Auth, Header, HttpsSchemaGetpostmanComJsonCollectionV210 as Col, Information, Item, Items1, Request, HttpsSchemaGetpostmanComJsonCollectionV210 } from './HttpsSchemaGetpostmanComJsonCollectionV210';
+import { C } from '../../utils/C';
+import { x } from '../../utils/x';
+import { BaseTransform } from '../BaseTransform';
 
 const codeSection = (d: string, type = '') => C([
   '```', type, EOL,
@@ -21,41 +11,19 @@ const codeSection = (d: string, type = '') => C([
   '```', EOL,
 ]);
 
-const codeJsonSection = (d: any, type = 'json') => codeSection(
-  JSON.stringify(d, null, 4),
-  type,
-);
-
-const x = <T>(v: () => T, o?: () => any) => {
-  try {
-    return v();
-  } catch {
-    if (o) {
-      return o();
-    }
-  }
-};
-
-const headerSection = (info: Information) => C([
-  `# API ${info.name}`,
-  EOL,
-  info.description,
-  EOL,
-]);
+const codeJsonSection = (d: any, type = 'json') => codeSection(JSON.stringify(d, null, 4), type);
 
 const renderAuthTypes = (auth: Auth) => {
   switch (auth.type) {
     case 'bearer': {
-      return auth.bearer && auth.bearer.map(
-        authelm => C([
-          `- Header Bearer: \`Bearer ${authelm.value}\``, EOL,
-        ]),
-      );
+      return auth.bearer && auth.bearer.map(authelm => C([
+        `- Header Bearer: \`Bearer ${authelm.value}\``, EOL,
+      ]));
     }
   }
 };
 
-const authSection = (auth?: null | Auth) => auth && C([
+export const authSection = (auth?: null | Auth) => auth && C([
   '## Auth', EOL,
   renderAuthTypes(auth), EOL,
 ]);
@@ -65,7 +33,7 @@ const authSubSection = (auth?: null | Auth) => auth && C([
   renderAuthTypes(auth), EOL,
 ]);
 
-const sectionVariablesSection = (variable: Col['variable']) => variable && C([
+export const sectionVariablesSection = (variable: Col['variable']) => variable && C([
   '## Variables', EOL,
   '| Variable | Type | Sample value |', EOL,
   '| ---- | ---- | ---- |', EOL,
@@ -74,7 +42,7 @@ const sectionVariablesSection = (variable: Col['variable']) => variable && C([
   ])), EOL,
 ]);
 
-const itemsSection = (items: Col['item']) => C([
+export const itemsSection = (items: Col['item']) => C([
   '## Items', EOL,
   ...subItemSection(items),
 ]);
@@ -85,7 +53,6 @@ const itemSection = (item: Item, path = '') => {
   const header = request.header;
   const body = request.body;
   // const response = request.response as Response[];
-
   return C([
     `### \`${request.method}\`: ${item.name}`, EOL,
     request.description && [`${request.description}`, EOL, EOL],
@@ -103,17 +70,13 @@ const sampleSubSection = (item: Item) => {
   const headers = request.header;
   const auth = request.auth;
   const body = request.body;
-
   if (!request.url) return;
   if (!(typeof request.url === 'object')) return;
   if (!request.url.raw) return;
-
   const uri = request.url.raw;
-
   const d: string[] = [
     `$ curl -X ${method} ${uri}`,
   ];
-
   if (headers && Array.isArray(headers) && headers.length) {
     headers.map((header) => {
       d.push(' \\');
@@ -121,29 +84,23 @@ const sampleSubSection = (item: Item) => {
       d.push(`    -H '${header.key}: ${header.value}'`);
     });
   }
-
   if (auth) {
     switch (auth.type) {
       case 'bearer': {
-        auth.bearer && auth.bearer.map(
-          (auth1) => {
-            d.push(' \\');
-            d.push(EOL);
-            d.push(`    -H 'Authorization: Bearer ${auth1.value}'`);
-          },
-        );
+        auth.bearer && auth.bearer.map((auth1) => {
+          d.push(' \\');
+          d.push(EOL);
+          d.push(`    -H 'Authorization: Bearer ${auth1.value}'`);
+        });
         break;
       }
     }
   }
-
   if (body && body.mode) {
     switch (body.mode) {
       case 'raw': {
         if (!body.raw) break;
-
         const raw = body.raw as string;
-
         d.push(' \\');
         d.push(EOL);
         d.push(`    -d '${x(
@@ -157,7 +114,6 @@ const sampleSubSection = (item: Item) => {
       }
     }
   }
-
   return C([
     '**Sample**', EOL,
     codeSection(d.join(''), 'shell'), EOL,
@@ -166,24 +122,17 @@ const sampleSubSection = (item: Item) => {
 
 const bodySubSection = (body: Request['body']) => {
   if (!body) return;
-
   const d = () => {
     switch (body.mode) {
-      case 'raw': return body.raw && x(
-        () => codeJsonSection(JSON.parse(body.raw as string)),
-        () => codeSection(body.raw as string),
-      );
+      case 'raw': return body.raw && x(() => codeJsonSection(JSON.parse(body.raw as string)), () => codeSection(body.raw as string));
     }
   };
-
   const e = d();
-
   return e && C([
     '**Body**', EOL,
     d(), EOL,
   ]);
 };
-
 const headerSubSection = (headers: string | Header[] | undefined) => {
   return headers && Array.isArray(headers) && headers.length && C([
     '**Header**', EOL, EOL,
@@ -194,22 +143,15 @@ const headerSubSection = (headers: string | Header[] | undefined) => {
     ])), EOL,
   ]);
 };
-
 const subItemSection = (items: Items1[], path = '', bufferCollection: Buffer[] = []) => {
   items.map((item) => {
     if (item.request) {
       bufferCollection.push(itemSection(item as Item, path));
     }
-
     if (item.item) {
-      subItemSection(
-        item.item as Items1[],
-        path ? `${path}/${item.name}` : item.name,
-        bufferCollection,
-      );
+      subItemSection(item.item as Items1[], path ? `${path}/${item.name}` : item.name, bufferCollection);
     }
   });
-
   return bufferCollection;
 };
 
@@ -217,9 +159,7 @@ function urlSubSection(request: Request) {
   if (!request.url) return;
   if (!(typeof request.url === 'object')) return;
   if (!request.url.raw) return;
-
   const variable = request.url.variable;
-
   const variableChunk = variable && variable.length && [
     EOL,
     '**Path Variable**', EOL, EOL,
@@ -231,20 +171,38 @@ function urlSubSection(request: Request) {
       ])), EOL,
     ]),
   ];
-
   return C([
     `\`${request.url.raw}\``, EOL,
     variableChunk,
   ]);
 }
 
-export function collectionToMd(data: Col | string | Buffer) {
-  const collection: Col = JSON.parse(data.toString());
+class Transform {
+  constructor(
+    private collection: Col,
+  ) { }
 
-  return C([
-    headerSection(collection.info),
-    authSection(collection.auth),
-    sectionVariablesSection(collection.variable),
-    itemsSection(collection.item),
-  ]);
+  headerSection(info: Information) {
+    return C([
+      `# API ${info.name}`,
+      EOL,
+      info.description,
+      EOL,
+    ]);
+  }
+
+  transform() {
+    return C([
+      this.headerSection(this.collection.info),
+      authSection(this.collection.auth),
+      sectionVariablesSection(this.collection.variable),
+      itemsSection(this.collection.item),
+    ]);
+  }
+}
+
+export function transform(collection: HttpsSchemaGetpostmanComJsonCollectionV210) {
+  const transformer = new Transform(collection);
+
+  return transformer.transform();
 }

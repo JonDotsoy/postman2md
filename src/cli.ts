@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-import { resolve } from 'path';
+import { readFileSync, statSync, writeFileSync } from 'fs';
 import { EOL } from 'os';
-import { statSync, readFileSync, writeFileSync } from 'fs';
-import { collectionToMd } from './read-postman-collection';
+import { resolve } from 'path';
+import { promisify } from 'util';
+import { postman2md } from './postman2md';
+import { get, Response, CoreOptions } from 'request';
 
 const [, , pathCollectionInput, pathMarkdownInput] = process.argv;
 
-(() => {
+(async () => {
   if (!pathCollectionInput || !pathMarkdownInput) {
     const d: string[] = [
       EOL,
@@ -19,14 +21,24 @@ const [, , pathCollectionInput, pathMarkdownInput] = process.argv;
     return;
   }
 
-  const pathCollection = resolve(`${process.cwd()}/${pathCollectionInput}`);
-  const pathMarkdown = resolve(`${process.cwd()}/${pathMarkdownInput}`);
+  let bufferFileInput: Buffer;
+  if (/^http?/i.test(pathCollectionInput)) {
+    const req = await promisify<string, Response>(get)(pathCollectionInput);
 
-  if (!statSync(pathCollection).isFile()) {
-    throw new Error(`Cannot found ${pathCollection} file.`);
+    bufferFileInput = req.body;
+  } else {
+    const pathCollection = resolve(`${process.cwd()}/${pathCollectionInput}`);
+
+    if (!statSync(pathCollection).isFile()) {
+      throw new Error(`Cannot found ${pathCollection} file.`);
+    }
+
+    bufferFileInput = readFileSync(pathCollection);
   }
 
-  const bufferMd = collectionToMd(readFileSync(pathCollection));
+  const pathMarkdown = resolve(`${process.cwd()}/${pathMarkdownInput}`);
 
-  writeFileSync(pathMarkdownInput, bufferMd);
+  const bufferMd = postman2md(bufferFileInput);
+
+  writeFileSync(pathMarkdown, bufferMd);
 })();
