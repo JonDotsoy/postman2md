@@ -177,7 +177,7 @@ class Transform extends BaseTransform<Collection> {
       const requests = order.map(e => rootRequests.find(({ id }) => e === id)) as Request[];
 
       folders.forEach((folder) => {
-        elms.push(folder.name);
+        elms.push(`${folder.name}${folder.description ? `: ${folder.description}` : ''}`);
         const nextElms: any[] = [];
 
         listElems(folder, nextElms);

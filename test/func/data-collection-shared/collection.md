@@ -2,12 +2,12 @@
 Authentication Service SMU APP.
 
 ## Menu
-- Auth
+- Auth: Principal apis to register and authorize.
   - Authorize
     - [Authorize with Firebase](#1f4d34d0-7be8-41ed-9388-c0490a83198e)
     - [Authorize with RUT](#1750b78e-6b6e-46cf-b42d-e9eb13987369)
     - [Authorize with Email](#2c25eb90-5e06-474e-a932-c249d110b09c)
-  - Register
+  - Register: The register require validation using the phone number.
     - [Register by RUT](#5182ce85-ae9f-43ff-be65-eea8ee57c4d5)
     - [Active Register](#2402d825-8e27-4e93-a5bb-680707c77711)
   - Session

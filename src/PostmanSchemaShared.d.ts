@@ -52,6 +52,7 @@ export interface Folder {
   order: string[];
   folders_order: string[];
   name: string;
+  description: string;
   id: string;
 }
 
