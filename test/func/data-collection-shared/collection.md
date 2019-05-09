@@ -29,40 +29,6 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 - BASEURL: http://localhost:4080
 
 ## Requests
-<div id="1750b78e-6b6e-46cf-b42d-e9eb13987369"></div>
-
-### Authorize with RUT
-`POST` `{{BASEURL}}/auth/authorize`
-
-Use it to authorize the user using RUT.
-
-**Heders**
-
-| key | type | value | description |
-| ---- | ---- | ---- | ---- |
-| Content-Type | `text` | application/json |  |
-
-**Body**
-
-```json
-{
-    "grant_type": "email",
-    "rut": "9199951K",
-    "password": "12342"
-}
-```
-**Sample cURL**
-
-```shell
-$ curl -X POST {{BASEURL}}/auth/authorize \
-    -H "Content-Type: application/json" \
-    -d '{
-    "grant_type": "email",
-    "rut": "9199951K",
-    "password": "12342"
-}'
-```
-
 <div id="1f4d34d0-7be8-41ed-9388-c0490a83198e"></div>
 
 ### Authorize with Firebase
@@ -99,12 +65,12 @@ $ curl -X POST {{BASEURL}}/auth/authorize \
 }'
 ```
 
-<div id="2402d825-8e27-4e93-a5bb-680707c77711"></div>
+<div id="1750b78e-6b6e-46cf-b42d-e9eb13987369"></div>
 
-### Active Register
-`POST` `{{BASEURL}}/auth/register/:registersPendingId`
+### Authorize with RUT
+`POST` `{{BASEURL}}/auth/authorize`
 
-Use to active the user with code.
+Use it to authorize the user using RUT.
 
 **Heders**
 
@@ -112,26 +78,24 @@ Use to active the user with code.
 | ---- | ---- | ---- | ---- |
 | Content-Type | `text` | application/json |  |
 
-**Path Variables**
-
-| key | value | description |
-| ---- | ---- | ---- |
-| registersPendingId | 5cd350f1aed446d49bc8c456 |  |
-
 **Body**
 
 ```json
 {
-    "code": "6154"
+    "grant_type": "email",
+    "rut": "9199951K",
+    "password": "12342"
 }
 ```
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/register/:registersPendingId \
+$ curl -X POST {{BASEURL}}/auth/authorize \
     -H "Content-Type: application/json" \
     -d '{
-    "code": "6154"
+    "grant_type": "email",
+    "rut": "9199951K",
+    "password": "12342"
 }'
 ```
 
@@ -207,60 +171,13 @@ $ curl -X POST {{BASEURL}}/auth/register \
 }'
 ```
 
-<div id="5462dfaa-60cb-4825-89c0-574c2d0e5c03"></div>
+<div id="2402d825-8e27-4e93-a5bb-680707c77711"></div>
 
-### Get info user
-`GET` `{{BASEURL}}/user/:userId`
+### Active Register
+`POST` `{{BASEURL}}/auth/register/:registersPendingId`
 
-**Authorization** **Type**: Bearer Token
+Use to active the user with code.
 
-```http
-Authorization: Bearer {{ACCESS_TOKEN}}
-```
-**Path Variables**
-
-| key | value | description |
-| ---- | ---- | ---- |
-| userId | me | User Id, Use `me` to get user id from `access_token`. |
-
-**Sample cURL**
-
-```shell
-$ curl -X GET {{BASEURL}}/user/:userId
-```
-
-<div id="765e531f-4a5c-4fe9-a64b-0db31764fb96"></div>
-
-### Health
-`GET` `{{BASEURL}}/health`
-
-It is used to inspect the state api service.
-
-The parameter `status` returns `pass` if there is no problem. `warn` if there are momentary problems or it is unstable. and `fail` if the service is inaccessible.
-
-**Heders**
-
-| key | type | value | description |
-| ---- | ---- | ---- | ---- |
-| Accept | `text` | application/json |  |
-
-**Sample cURL**
-
-```shell
-$ curl -X GET {{BASEURL}}/health \
-    -H "Accept: application/json"
-```
-
-<div id="92238fe6-7846-45c1-9fba-b3863a412dd1"></div>
-
-### Update info user
-`PUT` `{{BASEURL}}/user/:userId`
-
-**Authorization** **Type**: Bearer Token
-
-```http
-Authorization: Bearer {{ACCESS_TOKEN}}
-```
 **Heders**
 
 | key | type | value | description |
@@ -271,27 +188,23 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 
 | key | value | description |
 | ---- | ---- | ---- |
-| userId | me | User Id, Use `me` to get user id from `access_token`. |
+| registersPendingId | 5cd350f1aed446d49bc8c456 |  |
 
 **Body**
 
 ```json
 {
-	"name": "JAcon ribera",
-	"birthdate": "1992-01-28"
+    "code": "6154"
 }
-
 ```
 **Sample cURL**
 
 ```shell
-$ curl -X PUT {{BASEURL}}/user/:userId \
+$ curl -X POST {{BASEURL}}/auth/register/:registersPendingId \
     -H "Content-Type: application/json" \
     -d '{
-	"name": "JAcon ribera",
-	"birthdate": "1992-01-28"
-}
-'
+    "code": "6154"
+}'
 ```
 
 <div id="a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a"></div>
@@ -344,5 +257,92 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 
 ```shell
 $ curl -X GET {{BASEURL}}/auth/token/test
+```
+
+<div id="765e531f-4a5c-4fe9-a64b-0db31764fb96"></div>
+
+### Health
+`GET` `{{BASEURL}}/health`
+
+It is used to inspect the state api service.
+
+The parameter `status` returns `pass` if there is no problem. `warn` if there are momentary problems or it is unstable. and `fail` if the service is inaccessible.
+
+**Heders**
+
+| key | type | value | description |
+| ---- | ---- | ---- | ---- |
+| Accept | `text` | application/json |  |
+
+**Sample cURL**
+
+```shell
+$ curl -X GET {{BASEURL}}/health \
+    -H "Accept: application/json"
+```
+
+<div id="5462dfaa-60cb-4825-89c0-574c2d0e5c03"></div>
+
+### Get info user
+`GET` `{{BASEURL}}/user/:userId`
+
+**Authorization** **Type**: Bearer Token
+
+```http
+Authorization: Bearer {{ACCESS_TOKEN}}
+```
+**Path Variables**
+
+| key | value | description |
+| ---- | ---- | ---- |
+| userId | me | User Id, Use `me` to get user id from `access_token`. |
+
+**Sample cURL**
+
+```shell
+$ curl -X GET {{BASEURL}}/user/:userId
+```
+
+<div id="92238fe6-7846-45c1-9fba-b3863a412dd1"></div>
+
+### Update info user
+`PUT` `{{BASEURL}}/user/:userId`
+
+**Authorization** **Type**: Bearer Token
+
+```http
+Authorization: Bearer {{ACCESS_TOKEN}}
+```
+**Heders**
+
+| key | type | value | description |
+| ---- | ---- | ---- | ---- |
+| Content-Type | `text` | application/json |  |
+
+**Path Variables**
+
+| key | value | description |
+| ---- | ---- | ---- |
+| userId | me | User Id, Use `me` to get user id from `access_token`. |
+
+**Body**
+
+```json
+{
+	"name": "JAcon ribera",
+	"birthdate": "1992-01-28"
+}
+
+```
+**Sample cURL**
+
+```shell
+$ curl -X PUT {{BASEURL}}/user/:userId \
+    -H "Content-Type: application/json" \
+    -d '{
+	"name": "JAcon ribera",
+	"birthdate": "1992-01-28"
+}
+'
 ```
 

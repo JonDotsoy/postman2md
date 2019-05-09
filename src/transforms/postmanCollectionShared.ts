@@ -157,12 +157,33 @@ class Transform extends BaseTransform<Collection> {
   }
 
   requestsSection() {
-    const requests = this.collection.requests;
+    const requests = this.getOrderRequest();
 
     return requests && C([
       h2`Requests`,
       requests.map(request => this.requestSection(request)),
     ]);
+  }
+
+  getOrderRequest() {
+    const rootFolders = this.collection.folders || [];
+    const rootRequests = this.collection.requests || [];
+
+    const resultorder: Request[] = [];
+
+    const pushOrder = (folder: any) => {
+      const foldersOrder = folder.folders_order as string[];
+      const order = folder.order as string[];
+      const folders = foldersOrder.map(e => rootFolders.find(({ id }) => e === id)) as Folder[];
+      const requests = order.map(e => rootRequests.find(({ id }) => e === id)) as Request[];
+
+      folders.forEach(pushOrder);
+      resultorder.push(...requests);
+    };
+
+    pushOrder(this.collection);
+
+    return resultorder;
   }
 
   menuSection() {
