@@ -7,23 +7,17 @@ Authentication Service SMU APP.
     - [Authorize with Firebase](#1f4d34d0-7be8-41ed-9388-c0490a83198e)
     - [Authorize with RUT](#1750b78e-6b6e-46cf-b42d-e9eb13987369)
     - [Authorize with Email](#2c25eb90-5e06-474e-a932-c249d110b09c)
-
   - Register
     - [Register by RUT](#5182ce85-ae9f-43ff-be65-eea8ee57c4d5)
     - [Active Register](#2402d825-8e27-4e93-a5bb-680707c77711)
-
   - Session
     - [Refresh Token](#a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a)
     - [Test Token](#b35a341a-bb80-41ac-9f81-604af100bad5)
-
-
 - Util
   - [Health](#765e531f-4a5c-4fe9-a64b-0db31764fb96)
-
 - User
   - [Get info user](#5462dfaa-60cb-4825-89c0-574c2d0e5c03)
   - [Update info user](#92238fe6-7846-45c1-9fba-b3863a412dd1)
-
 
 ## Authorization
 **Type**: Bearer Token

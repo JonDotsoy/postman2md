@@ -29,18 +29,23 @@ export const codeBlock = new Proxy(blockCodeTyped(), {
   [type: string]: ReturnType<typeof blockCodeTyped>,
 };
 
-export const list = (e: any, tabs: number = 0, symbolList: number | string = '-'): string => {
+export const list = (
+  e: any,
+  tabs: number = 0,
+  symbolList: number | string = '-',
+  endEOL = true,
+): string => {
   const items = [].concat(e);
   const ul = items
     .map((item, i) => {
       const decorator = typeof symbolList === 'number' ? `${i + symbolList}.` : symbolList;
 
       if (typeof item === 'string') return `${'  '.repeat(tabs)}${decorator} ${item}${EOL}`;
-      if (Array.isArray(item)) return list(item, tabs + 1);
+      if (Array.isArray(item)) return list(item, tabs + 1, symbolList, false);
     })
     .join('');
 
-  return `${ul}${EOL}`;
+  return `${ul}${endEOL ? EOL : ''}`;
 };
 
 export const link = (href: string, title?: string) =>
