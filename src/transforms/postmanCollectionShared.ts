@@ -97,21 +97,41 @@ class Transform extends BaseTransform<Collection> {
   }
 
   requestSample(request: Request) {
+    const curlHeader = (haeder: any, value: any) => `-H "${haeder}": ${value}`;
+    const curlData = (value: any) => `-d '${value}'`;
+
     const {
       method,
       url,
       headerData,
+      auth,
       rawModeData,
     } = request;
 
-    const headerDataL = !Array.isArray(headerData)
-      ? []
-      : headerData.map(h => `-H "${h.key}: ${h.value}"`);
+    const headerDataL = [];
 
-    const rawModeDataL = rawModeData && `-d '${rawModeData}'`;
+    if (auth) {
+      if (auth.type === 'bearer' && auth.bearer) {
+        const bearer = auth.bearer.pop();
+        if (bearer) {
+          headerDataL.push(curlHeader('Authorization', `Bearer ${bearer.value}`));
+        }
+      }
+    }
+
+    if (Array.isArray(headerData)) {
+      headerDataL.push(
+        ...headerData.map(h => curlHeader(h.key, h.value)),
+      );
+    }
+
+    const rawModeDataL = rawModeData && curlData(rawModeData);
+
+    headerDataL.push(curlHeader('cache-control', 'no-cache'));
 
     const sampleBody = [
-      `curl -X ${method} ${url}`,
+      `curl -X ${method}`,
+      url,
       ...headerDataL,
       rawModeDataL,
     ]

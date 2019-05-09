@@ -55,8 +55,10 @@ This return an `access_token` and a `refresh_token`.
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/authorize \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/authorize \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "grant_type": "firebase",
     "id_token": "{{FIREBASE_ID_TOKEN}}"
@@ -86,8 +88,10 @@ Use it to authorize the user using RUT.
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/authorize \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/authorize \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "grant_type": "email",
     "rut": "9199951K",
@@ -118,8 +122,10 @@ Use it to authorize the user using email.
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/authorize \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/authorize \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "grant_type": "email",
     "email": "jonad.correo@gmail.com",
@@ -152,8 +158,10 @@ Use to register a new user.
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/register \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/register \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "grant_type": "email",
     "rut": "9199951K",
@@ -190,8 +198,10 @@ Use to active the user with code.
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/register/:registersPendingId \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/register/:registersPendingId \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "code": "6154"
 }'
@@ -219,8 +229,10 @@ Allows the re-creation of a valid access token, invalidating the previous refres
 **Sample cURL**
 
 ```shell
-$ curl -X POST {{BASEURL}}/auth/token/refresh \
-    -H "Content-Type: application/json" \
+$ curl -X POST \
+    {{BASEURL}}/auth/token/refresh \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
     "grant_type": "refresh_token",
     "refresh_token": "{{REFRESH_TOKEN}}"
@@ -242,7 +254,10 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 **Sample cURL**
 
 ```shell
-$ curl -X GET {{BASEURL}}/auth/token/test
+$ curl -X GET \
+    {{BASEURL}}/auth/token/test \
+    -H "Authorization": Bearer {{ACCESS_TOKEN}} \
+    -H "cache-control": no-cache
 ```
 
 ### <i id="765e531f-4a5c-4fe9-a64b-0db31764fb96"></i>Health
@@ -261,8 +276,10 @@ The parameter `status` returns `pass` if there is no problem. `warn` if there ar
 **Sample cURL**
 
 ```shell
-$ curl -X GET {{BASEURL}}/health \
-    -H "Accept: application/json"
+$ curl -X GET \
+    {{BASEURL}}/health \
+    -H "Accept": application/json \
+    -H "cache-control": no-cache
 ```
 
 ### <i id="5462dfaa-60cb-4825-89c0-574c2d0e5c03"></i>Get info user
@@ -282,7 +299,10 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 **Sample cURL**
 
 ```shell
-$ curl -X GET {{BASEURL}}/user/:userId
+$ curl -X GET \
+    {{BASEURL}}/user/:userId \
+    -H "Authorization": Bearer {{ACCESS_TOKEN}} \
+    -H "cache-control": no-cache
 ```
 
 ### <i id="92238fe6-7846-45c1-9fba-b3863a412dd1"></i>Update info user
@@ -317,8 +337,11 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 **Sample cURL**
 
 ```shell
-$ curl -X PUT {{BASEURL}}/user/:userId \
-    -H "Content-Type: application/json" \
+$ curl -X PUT \
+    {{BASEURL}}/user/:userId \
+    -H "Authorization": Bearer {{ACCESS_TOKEN}} \
+    -H "Content-Type": application/json \
+    -H "cache-control": no-cache \
     -d '{
 	"name": "JAcon ribera",
 	"birthdate": "1992-01-28"
