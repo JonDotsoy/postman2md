@@ -78,8 +78,7 @@ class Transform extends BaseTransform<Collection> {
     } = request;
 
     return C([
-      `<div id="${id}"></div>${EOL}${EOL}`,
-      h3`${name}`,
+      h3`<i id="${id}"></i>${name}`,
       url && method && p`${code`${method}`} ${code`${url}`}`,
       description && p`${description}`,
       auth && [

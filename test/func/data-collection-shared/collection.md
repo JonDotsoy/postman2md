@@ -29,9 +29,7 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 - BASEURL: http://localhost:4080
 
 ## Requests
-<div id="1f4d34d0-7be8-41ed-9388-c0490a83198e"></div>
-
-### Authorize with Firebase
+### <i id="1f4d34d0-7be8-41ed-9388-c0490a83198e"></i>Authorize with Firebase
 `POST` `{{BASEURL}}/auth/authorize`
 
 Require a `id_token` from firebase auth to register an user.
@@ -65,9 +63,7 @@ $ curl -X POST {{BASEURL}}/auth/authorize \
 }'
 ```
 
-<div id="1750b78e-6b6e-46cf-b42d-e9eb13987369"></div>
-
-### Authorize with RUT
+### <i id="1750b78e-6b6e-46cf-b42d-e9eb13987369"></i>Authorize with RUT
 `POST` `{{BASEURL}}/auth/authorize`
 
 Use it to authorize the user using RUT.
@@ -99,9 +95,7 @@ $ curl -X POST {{BASEURL}}/auth/authorize \
 }'
 ```
 
-<div id="2c25eb90-5e06-474e-a932-c249d110b09c"></div>
-
-### Authorize with Email
+### <i id="2c25eb90-5e06-474e-a932-c249d110b09c"></i>Authorize with Email
 `POST` `{{BASEURL}}/auth/authorize`
 
 Use it to authorize the user using email.
@@ -133,9 +127,7 @@ $ curl -X POST {{BASEURL}}/auth/authorize \
 }'
 ```
 
-<div id="5182ce85-ae9f-43ff-be65-eea8ee57c4d5"></div>
-
-### Register by RUT
+### <i id="5182ce85-ae9f-43ff-be65-eea8ee57c4d5"></i>Register by RUT
 `POST` `{{BASEURL}}/auth/register`
 
 Use to register a new user.
@@ -171,9 +163,7 @@ $ curl -X POST {{BASEURL}}/auth/register \
 }'
 ```
 
-<div id="2402d825-8e27-4e93-a5bb-680707c77711"></div>
-
-### Active Register
+### <i id="2402d825-8e27-4e93-a5bb-680707c77711"></i>Active Register
 `POST` `{{BASEURL}}/auth/register/:registersPendingId`
 
 Use to active the user with code.
@@ -207,9 +197,7 @@ $ curl -X POST {{BASEURL}}/auth/register/:registersPendingId \
 }'
 ```
 
-<div id="a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a"></div>
-
-### Refresh Token
+### <i id="a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a"></i>Refresh Token
 `POST` `{{BASEURL}}/auth/token/refresh`
 
 Allows the re-creation of a valid access token, invalidating the previous refresh token.
@@ -239,9 +227,7 @@ $ curl -X POST {{BASEURL}}/auth/token/refresh \
 }'
 ```
 
-<div id="b35a341a-bb80-41ac-9f81-604af100bad5"></div>
-
-### Test Token
+### <i id="b35a341a-bb80-41ac-9f81-604af100bad5"></i>Test Token
 `GET` `{{BASEURL}}/auth/token/test`
 
 **Only Development**
@@ -259,9 +245,7 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 $ curl -X GET {{BASEURL}}/auth/token/test
 ```
 
-<div id="765e531f-4a5c-4fe9-a64b-0db31764fb96"></div>
-
-### Health
+### <i id="765e531f-4a5c-4fe9-a64b-0db31764fb96"></i>Health
 `GET` `{{BASEURL}}/health`
 
 It is used to inspect the state api service.
@@ -281,9 +265,7 @@ $ curl -X GET {{BASEURL}}/health \
     -H "Accept: application/json"
 ```
 
-<div id="5462dfaa-60cb-4825-89c0-574c2d0e5c03"></div>
-
-### Get info user
+### <i id="5462dfaa-60cb-4825-89c0-574c2d0e5c03"></i>Get info user
 `GET` `{{BASEURL}}/user/:userId`
 
 **Authorization** **Type**: Bearer Token
@@ -303,9 +285,7 @@ Authorization: Bearer {{ACCESS_TOKEN}}
 $ curl -X GET {{BASEURL}}/user/:userId
 ```
 
-<div id="92238fe6-7846-45c1-9fba-b3863a412dd1"></div>
-
-### Update info user
+### <i id="92238fe6-7846-45c1-9fba-b3863a412dd1"></i>Update info user
 `PUT` `{{BASEURL}}/user/:userId`
 
 **Authorization** **Type**: Bearer Token
