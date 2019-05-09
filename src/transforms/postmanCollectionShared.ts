@@ -1,8 +1,8 @@
 // tslint:disable:max-line-length
 import { EOL } from 'os';
-import { Auth, Collection, HeaderData, PathVariableData, QueryParams, Request } from '../PostmanSchemaShared';
+import { Auth, Collection, HeaderData, PathVariableData, QueryParams, Request, Folder } from '../PostmanSchemaShared';
 import { C } from '../utils/C';
-import { b, code, codeBlock, h2, h3, list, p, paragraph, table, title1, title2 } from '../utils/markdown';
+import { b, code, codeBlock, h2, h3, list, p, paragraph, table, title1, title2, ul, h1, link } from '../utils/markdown';
 import { BaseTransform } from './BaseTransform';
 
 class Transform extends BaseTransform<Collection> {
@@ -65,6 +65,7 @@ class Transform extends BaseTransform<Collection> {
 
   requestSection(request: Request) {
     const {
+      id,
       name,
       url,
       description,
@@ -77,6 +78,7 @@ class Transform extends BaseTransform<Collection> {
     } = request;
 
     return C([
+      `<div id="${id}"></div>${EOL}${EOL}`,
       h3`${name}`,
       url && method && p`${code`${method}`} ${code`${url}`}`,
       description && p`${description}`,
@@ -119,7 +121,7 @@ class Transform extends BaseTransform<Collection> {
 
     return C([
       p`${b`Sample cURL`}`,
-      codeBlock.shell`${sampleBody.join(`\\${EOL}`)}`,
+      codeBlock.shell`${sampleBody.join(` \\${EOL}`)}`,
       EOL,
     ]);
   }
@@ -160,6 +162,41 @@ class Transform extends BaseTransform<Collection> {
     return requests && C([
       h2`Requests`,
       requests.map(request => this.requestSection(request)),
+    ]);
+  }
+
+  menuSection() {
+    const rootFolders = this.collection.folders || [];
+    const rootRequests = this.collection.requests || [];
+    const elms: any[] = [];
+
+    const listElems = (obj: any, elms: any[]) => {
+      const foldersOrder = obj.folders_order as string[];
+      const order = obj.order as string[];
+      const folders = foldersOrder.map(e => rootFolders.find(({ id }) => e === id)) as Folder[];
+      const requests = order.map(e => rootRequests.find(({ id }) => e === id)) as Request[];
+
+      folders.forEach((folder) => {
+        elms.push(folder.name);
+        const nextElms: any[] = [];
+
+        listElems(folder, nextElms);
+
+        elms.push(nextElms);
+      });
+
+      requests.forEach((request) => {
+        elms.push(
+          link(`#${request.id}`)`${request.name}`,
+        );
+      });
+    };
+
+    listElems(this.collection, elms);
+
+    return C([
+      h2`Menu`,
+      list(elms),
     ]);
   }
 }

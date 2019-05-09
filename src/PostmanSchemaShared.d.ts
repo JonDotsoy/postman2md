@@ -36,6 +36,7 @@ export interface QueryParams {
 }
 
 export interface Request {
+  id: string;
   method: string;
   headerData?: HeaderData[];
   url?: string;
@@ -47,7 +48,17 @@ export interface Request {
   queryParams?: QueryParams[],
 }
 
+export interface Folder {
+  order: string[];
+  folders_order: string[];
+  name: string;
+  id: string;
+}
+
 export interface Collection {
+  order: string[];
+  folders: Folder[];
+  folders_order: string[];
   requests?: Request[]
   variables?: Variable[]
   auth?: Auth

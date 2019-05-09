@@ -162,3 +162,6 @@ $RECYCLE.BIN/
 src/**/*.d.ts
 src/**/*.d.ts.map
 src/**/*.js
+test/**/*.d.ts
+test/**/*.d.ts.map
+test/**/*.js

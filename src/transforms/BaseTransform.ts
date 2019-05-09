@@ -8,10 +8,15 @@ export class BaseTransform<T = any> {
   transform(): Buffer {
     return C([
       this.headerSection(),
+      this.menuSection(),
       this.authSection(),
       this.variablesSection(),
       this.requestsSection(),
     ]);
+  }
+
+  menuSection(): Buffer | undefined {
+    return C();
   }
 
   headerSection(): Buffer | undefined {

@@ -1,7 +1,7 @@
 {
     "id": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
     "name": "SMU Unimarc Auth Service",
-    "description": "abc Auth...",
+    "description": "Authentication Service SMU APP.",
     "auth": {
         "type": "bearer",
         "bearer": [
@@ -35,14 +35,12 @@
     ],
     "variables": [
         {
-            "key": "HOST",
+            "key": "BASEURL",
             "value": "http:\/\/localhost:4080",
             "disabled": false
         }
     ],
-    "order": [
-        "db9283aa-b13f-415a-9666-b37e179f3d0a"
-    ],
+    "order": [],
     "folders_order": [
         "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
         "026e3f52-5332-425a-bbb4-5079136947e4",
@@ -51,20 +49,69 @@
     "folders": [
         {
             "id": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
-            "name": "Register",
-            "description": "",
+            "name": "Auth",
+            "description": "Principal apis to register and authorize.",
             "auth": null,
             "events": null,
             "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
             "folder": null,
+            "order": [],
+            "folders_order": [
+                "23d205bd-1a1b-437a-8a53-6c9a35d7feee",
+                "e92131ac-cef2-4c75-bc42-0ef01f52683f",
+                "99ad087e-c2e3-4997-a44a-fd75dc59080d"
+            ],
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folderId": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94"
+        },
+        {
+            "id": "23d205bd-1a1b-437a-8a53-6c9a35d7feee",
+            "name": "Authorize",
+            "description": "",
+            "auth": null,
+            "events": null,
+            "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
             "order": [
                 "1f4d34d0-7be8-41ed-9388-c0490a83198e",
+                "1750b78e-6b6e-46cf-b42d-e9eb13987369",
+                "2c25eb90-5e06-474e-a932-c249d110b09c"
+            ],
+            "folders_order": [],
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folderId": "23d205bd-1a1b-437a-8a53-6c9a35d7feee"
+        },
+        {
+            "id": "e92131ac-cef2-4c75-bc42-0ef01f52683f",
+            "name": "Register",
+            "description": "The register require validation using the phone number.",
+            "auth": null,
+            "events": null,
+            "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
+            "order": [
+                "5182ce85-ae9f-43ff-be65-eea8ee57c4d5",
+                "2402d825-8e27-4e93-a5bb-680707c77711"
+            ],
+            "folders_order": [],
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folderId": "e92131ac-cef2-4c75-bc42-0ef01f52683f"
+        },
+        {
+            "id": "99ad087e-c2e3-4997-a44a-fd75dc59080d",
+            "name": "Session",
+            "description": "",
+            "auth": null,
+            "events": null,
+            "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
+            "order": [
                 "a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a",
                 "b35a341a-bb80-41ac-9f81-604af100bad5"
             ],
             "folders_order": [],
             "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
-            "folderId": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94"
+            "folderId": "99ad087e-c2e3-4997-a44a-fd75dc59080d"
         },
         {
             "id": "e4f4ef8a-6ada-426a-9124-c78ca688c4a6",
@@ -100,9 +147,122 @@
     ],
     "requests": [
         {
+            "id": "1750b78e-6b6e-46cf-b42d-e9eb13987369",
+            "name": "Authorize with RUT",
+            "url": "{{BASEURL}}\/auth\/authorize",
+            "description": "Use it to authorize the user using RUT.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": [
+                {
+                    "description": "",
+                    "enabled": true,
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application\/json"
+                }
+            ],
+            "method": "POST",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "023de265-7c11-48af-8ba2-3efa7d84777c",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );",
+                            "    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );",
+                            "});",
+                            ""
+                        ],
+                        "type": "text\/javascript"
+                    }
+                }
+            ],
+            "folder": "23d205bd-1a1b-437a-8a53-6c9a35d7feee",
+            "responses": [
+                {
+                    "id": "45900786-017d-4784-a547-5034bbe1b5d8",
+                    "name": "Success Login",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"access_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzY29wZSI6IiIsInNlc3Npb25JZCI6IjllOWYwZDIxLWYxZTgtNGIzOC1hNzdlLWFhZWY4MzVkNjIyZiIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzU0MzM3NjcyLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjI1OjM3LjY3MloiLCJpYXQiOjE1NTczNTQzMzcsImV4cCI6MTU1NzM1NzkzNywic3ViIjoiYWNjZXNzX3Rva2VuIn0.nngNItXx5m6mnimURih6--pfa8HgZoTDZx9T49v_4t_yO1rHbldOAVYH9kx-ORzNLgkYheLgNhRF07-l8YhveCZw6Q1HCGGgiD6dATgag4cnYU-tXLwy7CBWpQAPGXTz6yNCORKo31_elDFmA-1Q9siHy6ar7hZrGgWmH_Rt3obSC8vA_JggaKlKZZN-yyUBgf5mdTtmP8OjtxkLnrYgGvvxdHdRPwqbDLSn7mc0wm8kREBW1AcSnHCsgGwlzqLz4w6hZuveWaoZYuPDXypK8nft595brYiiovNTC5vjnsOCjYOWxECgsfhdfWD97nCh9nauDeESqzPHGVPUbMzUKA\",\n    \"refresh_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzZXNzaW9uSWQiOiI5ZTlmMGQyMS1mMWU4LTRiMzgtYTc3ZS1hYWVmODM1ZDYyMmYiLCJzY29wZSI6IiIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzU0MzM3NjcyLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjI1OjM3LjY3MloiLCJpYXQiOjE1NTczNTQzMzcsImV4cCI6MTU1OTc3MzUzNywic3ViIjoicmVmcmVzaF90b2tlbiJ9.NQfw0MZNP5j8zLa76OCHKT3w41kd3lmT5IoAWXvHaaQ_Quwp50PoYuHjtGLKbesBr-uqFkADkNFRLXeKv3bU1JKBhaug-Q9Tf9xDu1yPbU5zTkA5vsoHYjUZxNB72FHnpyKlbTR-n5Yyqlu_oqvob1B_0VF9ac7_dVsxE9tWObb2ok5mQdNw2pwbVH6CT2PoGRLFH1iuD4Ll8NOJBDHsd6dHbYq_EVB1xYTfruxSFjmVnDtk7lLVz_cYlJ3Cs4RL6mJFFeVTGu-uefHazuiny5fqKZ78oG6aY00e9I17vzurhUyJNCXbovHR7u3JKl-iZ5y3BJFqVaojdhP6Tq7AnA\"\n}",
+                    "responseCode": {
+                        "code": 201,
+                        "name": "Created"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"grant_type\": \"email\",\n    \"rut\": \"9199951K\",\n    \"password\": \"12342\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "description": "",
+                                "enabled": true,
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "type": "text",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/authorize"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "1549"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"60d-uZr2s+FvTseoxo\/Y+0q60sL3FF8\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 22:25:37 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "1750b78e-6b6e-46cf-b42d-e9eb13987369",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                }
+            ],
+            "preRequestScript": null,
+            "tests": "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );\n    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );\n});\n",
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "rawModeData": "{\n    \"grant_type\": \"email\",\n    \"rut\": \"9199951K\",\n    \"password\": \"12342\"\n}",
+            "headers": "Content-Type: application\/json\n",
+            "pathVariables": []
+        },
+        {
             "id": "1f4d34d0-7be8-41ed-9388-c0490a83198e",
-            "name": "Register with Firebase",
-            "url": "{{HOST}}\/auth\/authorize",
+            "name": "Authorize with Firebase",
+            "url": "{{BASEURL}}\/auth\/authorize",
             "description": "Require a `id_token` from firebase auth to register an user.\n\nThis return an `access_token` and a `refresh_token`.\n\n*warning*: this endpoint revoke the firebase refresh token.",
             "data": [],
             "dataMode": "raw",
@@ -137,7 +297,7 @@
                     }
                 }
             ],
-            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
+            "folder": "23d205bd-1a1b-437a-8a53-6c9a35d7feee",
             "responses": [
                 {
                     "id": "279a3586-6cd8-4c4c-9917-29ee65611a95",
@@ -216,14 +376,542 @@
             "currentHelper": null,
             "helperAttributes": null,
             "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
-            "rawModeData": "{\n    \"grant_type\": \"firebase\",\n    \"id_token\": \"{{firebase_id_token}}\"\n}",
+            "rawModeData": "{\n    \"grant_type\": \"firebase\",\n    \"id_token\": \"{{FIREBASE_ID_TOKEN}}\"\n}",
+            "headers": "Content-Type: application\/json\n",
+            "pathVariables": []
+        },
+        {
+            "id": "2402d825-8e27-4e93-a5bb-680707c77711",
+            "name": "Active Register",
+            "url": "{{BASEURL}}\/auth\/register\/:registersPendingId",
+            "description": "Use to active the user with code.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": [
+                {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application\/json",
+                    "description": "",
+                    "type": "text"
+                }
+            ],
+            "method": "POST",
+            "pathVariableData": [
+                {
+                    "key": "registersPendingId",
+                    "value": "5cd350f1aed446d49bc8c456"
+                }
+            ],
+            "queryParams": [],
+            "auth": null,
+            "events": [],
+            "folder": "e92131ac-cef2-4c75-bc42-0ef01f52683f",
+            "responses": [
+                {
+                    "id": "3f32c0ee-ec45-4bec-8943-b263f4de5a52",
+                    "name": "Success actived",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"access_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzY29wZSI6IiIsInNlc3Npb25JZCI6ImFmNzJiZWQ1LTFjZWItNGZiOS05OTZiLTJiYjY4ODdjNmIwOSIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzUzMDk1NTEwLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjA0OjU1LjUxMFoiLCJpYXQiOjE1NTczNTMwOTUsImV4cCI6MTU1NzM1NjY5NSwic3ViIjoiYWNjZXNzX3Rva2VuIn0.OxCg1HbFNuM4PBQ9j0d_tqydjjW7ci3SrLRiJI_1RpxFKS_QcNcjTtZhD7iz5NJ-EBEZnMEOh-fCU-AosdDJdT5oK9RI8Z_71uclhhSN7nvsCmkW2CXCL3MxTzrcdkA398lnHKkxUX_4IlWbpC8BzeUl_905_iaJRlZj3Xt6Z0G0E4pjLfnWX4vR-d8UmwPcEuy9-I7thxF3KUqktHhfKF691lNPq7HehFe3SgjwQ4N8GjyysQieln7FKmGNpMuLD0bBcd41TIZ0FARCKpc88V-f0_vWS88vp2bRUJou98AlzCNfPYq5Nh7xLaN0JNQbxoWJPXiXP-iEKD77Pil8ZQ\",\n    \"refresh_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzZXNzaW9uSWQiOiJhZjcyYmVkNS0xY2ViLTRmYjktOTk2Yi0yYmI2ODg3YzZiMDkiLCJzY29wZSI6IiIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzUzMDk1NTEwLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjA0OjU1LjUxMFoiLCJpYXQiOjE1NTczNTMwOTUsImV4cCI6MTU1OTc3MjI5NSwic3ViIjoicmVmcmVzaF90b2tlbiJ9.FM5fZg5TpQqFItBnDVooP-91zOPeqhT-jlFfKdJQ29iA9GqGBCJxDI5owC7NwIH6kgpiCcmL2BCHAs7ebdc5jFfCSbYk2OJr5sIJCct987GXQdz6RksiOVT2t7er7ew-KAT-MQBe_X51AwcK8K6erTD7htSCHC_pYdknj7zmwqg2hWhHheGzIcXB41RX-hCxcaLrr7_zU273hFxJuE7hviv8tKa9T-KzlKiuc5HpXxAwJcjuCDvpsZWnoLCKKIjoPv9Iu2QvbPOYPBVKS-omv2pirtjlJ5wY2k2QkwHDykM8r2Nd-vS7miTrxSGLXPuVejXFyhW2hClOuKeV5xh8bw\"\n}",
+                    "responseCode": {
+                        "code": 201,
+                        "name": "Created"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"code\": \"6154\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "value": "application\/json",
+                                "description": "",
+                                "type": "text"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [
+                            {
+                                "key": "registersPendingId",
+                                "value": "5cd350f1aed446d49bc8c456"
+                            }
+                        ],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/register\/:registersPendingId"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "1549"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"60d-5FbvqzNCDM3t5jgmegHXw4UIzWw\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 22:04:55 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "2402d825-8e27-4e93-a5bb-680707c77711",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                },
+                {
+                    "id": "9531b8d1-cdc3-4cfd-8f5c-120212067c00",
+                    "name": "Already registered",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"error\": {\n        \"statusCode\": 409,\n        \"message\": \"Already registered\",\n        \"status\": 409,\n        \"name\": \"ConflictError\"\n    }\n}",
+                    "responseCode": {
+                        "code": 409,
+                        "name": "Conflict"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"code\": \"6154\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "value": "application\/json",
+                                "description": "",
+                                "type": "text"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [
+                            {
+                                "key": "registersPendingId",
+                                "value": "5cd350f1aed446d49bc8c456"
+                            }
+                        ],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/register\/:registersPendingId"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "537"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"219-AtlsJXZmNfgvFQIp2sR2stLt7rY\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 22:05:28 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "2402d825-8e27-4e93-a5bb-680707c77711",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                },
+                {
+                    "id": "f7ae791d-6c4f-451c-b305-2b82db99753b",
+                    "name": "Not found",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"error\": {\n        \"statusCode\": 404,\n        \"message\": \"Cannot POST \/auth\/register\/5cd350f1aed446d49bc8c456s\",\n        \"status\": 404,\n        \"name\": \"NotFoundError\"\n    }\n}",
+                    "responseCode": {
+                        "code": 404,
+                        "name": "Not Found"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"code\": \"6154\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "value": "application\/json",
+                                "description": "",
+                                "type": "text"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [
+                            {
+                                "key": "registersPendingId",
+                                "value": "5cd350f1aed446d49bc8c456s"
+                            }
+                        ],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/register\/:registersPendingId"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "2266"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"8da-y8hE3PUtmnkCCvkIYemJNFcWnZ8\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 22:05:46 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "2402d825-8e27-4e93-a5bb-680707c77711",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                }
+            ],
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "rawModeData": "{\n    \"code\": \"6154\"\n}",
+            "headers": "Content-Type: application\/json\n",
+            "pathVariables": {
+                "registersPendingId": "5cd350f1aed446d49bc8c456"
+            }
+        },
+        {
+            "id": "2c25eb90-5e06-474e-a932-c249d110b09c",
+            "name": "Authorize with Email",
+            "url": "{{BASEURL}}\/auth\/authorize",
+            "description": "Use it to authorize the user using email.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": [
+                {
+                    "description": "",
+                    "enabled": true,
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application\/json"
+                }
+            ],
+            "method": "POST",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "023de265-7c11-48af-8ba2-3efa7d84777c",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );",
+                            "    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );",
+                            "});",
+                            ""
+                        ],
+                        "type": "text\/javascript"
+                    }
+                }
+            ],
+            "folder": "23d205bd-1a1b-437a-8a53-6c9a35d7feee",
+            "responses": [
+                {
+                    "id": "6354650a-4450-4bef-be20-00d2e64b66c6",
+                    "name": "Success Login",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"access_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzY29wZSI6IiIsInNlc3Npb25JZCI6IjBmMTI1ODNjLTQ4NTUtNDQ2YS04MTgzLTI2ODlkZjVkNzU3ZCIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzU0MzQ5ODIzLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjI1OjQ5LjgyM1oiLCJpYXQiOjE1NTczNTQzNDksImV4cCI6MTU1NzM1Nzk0OSwic3ViIjoiYWNjZXNzX3Rva2VuIn0.FECNoUBYetDZcw5BeLzkuwsCxLg0j6_eGhwTHUj1h5n9tASYxAm3TqtLlsOcyUdXJa1mHsSONrEYyARgtFFx_mAZii3yCl6vpKw9_c5rxQzTIMRUSYhrtZv_HygGMOJXekwW4cQ2w1BYyYb44oOlHOLsklyc20vn5EgEmPYvw_K_2KqJrqQv_uuVRrVspBb-z9oFSBeR36Cz7UvncF1_yyRSJeWdhlRj9W_S5zVVF5g9xvcDoU8pt-GdM0Q7zDmK0EfwjZB4d3MVs4tY_P2EY34vMPr6a3C-W243R65YvIq1_papnreesjKF-KH0OQttUetiKCVihU8juS0t2yo-jg\",\n    \"refresh_token\": \"eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1Y2QzNTBmMWFlZDQ0NmQ0OWJjOGM0NTUiLCJzZXNzaW9uSWQiOiIwZjEyNTgzYy00ODU1LTQ0NmEtODE4My0yNjg5ZGY1ZDc1N2QiLCJzY29wZSI6IiIsImRhdGEiOnsid2l0aERvY3VtZW50Ijp0cnVlLCJ3dXRoUGhvbmUiOnRydWUsInZlcmlmaWVkIjp0cnVlfSwicmVmcmVzaEF0IjoxNTU3MzU0MzQ5ODIzLCJjcmVhdGVkQXQiOiIyMDE5LTA1LTA4VDIyOjI1OjQ5LjgyM1oiLCJpYXQiOjE1NTczNTQzNDksImV4cCI6MTU1OTc3MzU0OSwic3ViIjoicmVmcmVzaF90b2tlbiJ9.YWiSmuTr41d7_vzHUBTtoIx7FMw2oMwkcbOT1stqfbVKH_utk1YgmNg6XTyvh9ykI2tTv6TR6b0NTXkXVtTmg0ut2mWnq25G6UkYfIKmx8W9yKJsliH4aJmGGPvypG8No9X305Tw0ZGgQKncx4yAfZ4nAI97eJzc8JYUig_vR-y0U1ngYt4kuzLFWCOBVSf-a6eN_o81IrLe6Xbu-p3bGgP464CPZwGQz69Bnu9dhKJrztBE7NXR7td2_KLa-6S6MrTTKuAfu2raZ_ImKla8yakr5FnoaosX35n1_3gZvcBWzO9RE8Aek4-zGfzzdLCp-3SNI3zD0oHPmdpCDrIdzg\"\n}",
+                    "responseCode": {
+                        "code": 201,
+                        "name": "Created"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"grant_type\": \"email\",\n    \"email\": \"jonad.correo@gmail.com\",\n    \"password\": \"12342\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "description": "",
+                                "enabled": true,
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "type": "text",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/authorize"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "1549"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"60d-nR6VCyfJrFl5LjKCr+WE+hQbDAw\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 22:25:49 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "2c25eb90-5e06-474e-a932-c249d110b09c",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                }
+            ],
+            "preRequestScript": null,
+            "tests": "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );\n    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );\n});\n",
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "rawModeData": "{\n    \"grant_type\": \"email\",\n    \"email\": \"jonad.correo@gmail.com\",\n    \"password\": \"12342\"\n}",
+            "headers": "Content-Type: application\/json\n",
+            "pathVariables": []
+        },
+        {
+            "id": "5182ce85-ae9f-43ff-be65-eea8ee57c4d5",
+            "name": "Register by RUT",
+            "url": "{{BASEURL}}\/auth\/register",
+            "description": "Use to register a new user.",
+            "data": [],
+            "dataMode": "raw",
+            "headerData": [
+                {
+                    "description": "",
+                    "enabled": true,
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application\/json"
+                }
+            ],
+            "method": "POST",
+            "pathVariableData": [],
+            "queryParams": [],
+            "auth": null,
+            "events": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "023de265-7c11-48af-8ba2-3efa7d84777c",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );",
+                            "    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );",
+                            "});",
+                            ""
+                        ],
+                        "type": "text\/javascript"
+                    }
+                }
+            ],
+            "folder": "e92131ac-cef2-4c75-bc42-0ef01f52683f",
+            "responses": [
+                {
+                    "id": "04527681-decb-4139-a1a2-8013a8a713b9",
+                    "name": "SMS Sended",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"_id\": \"5cd33d6ff1aa0ab8007fbfa2\",\n    \"createdAt\": \"2019-05-08T20:34:55.621Z\",\n    \"smsSended\": {\n        \"ok\": true,\n        \"to\": \"56947331064\",\n        \"messageId\": \"1557348044037594571\"\n    }\n}",
+                    "responseCode": {
+                        "code": 200,
+                        "name": "OK"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"grant_type\": \"email\",\n    \"rut\": \"9199951K\",\n    \"email\": \"jonad.correo@gmail.com\",\n    \"phone\": \"56947331064\",\n    \"password\": \"12342\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "description": "",
+                                "enabled": true,
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "type": "text",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/register"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "150"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"96-syeFsMBJ8XaQ9TjQtfDCHwsR1Mk\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 20:40:44 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "5182ce85-ae9f-43ff-be65-eea8ee57c4d5",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                },
+                {
+                    "id": "3365b0b0-15eb-4826-8485-9211eb9ea061",
+                    "name": "Wait to send again",
+                    "status": null,
+                    "mime": null,
+                    "language": "json",
+                    "text": "{\n    \"_id\": \"5cd3418c27d137bf6b6b5aff\",\n    \"createdAt\": \"2019-05-08T20:52:28.102Z\",\n    \"lastNotified\": \"2019-05-08T20:56:34.860Z\",\n    \"smsSended\": {\n        \"ok\": false\n    },\n    \"notifiedAt\": \"29s\"\n}",
+                    "responseCode": {
+                        "code": 200,
+                        "name": "OK"
+                    },
+                    "requestObject": {
+                        "data": "{\n    \"grant_type\": \"email\",\n    \"rut\": \"9199951K\",\n    \"email\": \"jonad.correo@gmail.com\",\n    \"phone\": \"56947331064\",\n    \"password\": \"12342\"\n}",
+                        "dataMode": "raw",
+                        "headerData": [
+                            {
+                                "description": "",
+                                "enabled": true,
+                                "key": "Content-Type",
+                                "name": "Content-Type",
+                                "type": "text",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "pathVariableData": [],
+                        "queryParams": [],
+                        "url": "{{BASEURL}}\/auth\/register"
+                    },
+                    "headers": [
+                        {
+                            "key": "X-Powered-By",
+                            "value": "Express"
+                        },
+                        {
+                            "key": "Access-Control-Allow-Origin",
+                            "value": "*"
+                        },
+                        {
+                            "key": "Content-Type",
+                            "value": "application\/json; charset=utf-8"
+                        },
+                        {
+                            "key": "Content-Length",
+                            "value": "159"
+                        },
+                        {
+                            "key": "ETag",
+                            "value": "W\/\"9f-dHiBm25F9P3\/U3hNNslOCLU0Yio\""
+                        },
+                        {
+                            "key": "Date",
+                            "value": "Wed, 08 May 2019 20:57:03 GMT"
+                        },
+                        {
+                            "key": "Connection",
+                            "value": "keep-alive"
+                        }
+                    ],
+                    "cookies": null,
+                    "request": "5182ce85-ae9f-43ff-be65-eea8ee57c4d5",
+                    "collection": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b"
+                }
+            ],
+            "preRequestScript": null,
+            "tests": "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n    pm.environment.set( \"ACCESS_TOKEN\", pm.response.json().access_token, true );\n    pm.environment.set( \"REFRESH_TOKEN\", pm.response.json().refresh_token );\n});\n",
+            "currentHelper": null,
+            "helperAttributes": null,
+            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
+            "rawModeData": "{\n    \"grant_type\": \"email\",\n    \"rut\": \"9199951K\",\n    \"email\": \"jonad.correo@gmail.com\",\n    \"phone\": \"56947331064\",\n    \"password\": \"12342\"\n}",
             "headers": "Content-Type: application\/json\n",
             "pathVariables": []
         },
         {
             "id": "5462dfaa-60cb-4825-89c0-574c2d0e5c03",
             "name": "Get info user",
-            "url": "{{HOST}}\/user\/:userId",
+            "url": "{{BASEURL}}\/user\/:userId",
             "description": "",
             "data": null,
             "dataMode": null,
@@ -331,7 +1019,7 @@
         {
             "id": "765e531f-4a5c-4fe9-a64b-0db31764fb96",
             "name": "Health",
-            "url": "{{HOST}}\/health",
+            "url": "{{BASEURL}}\/health",
             "description": "It is used to inspect the state api service.\n\nThe parameter `status` returns `pass` if there is no problem. `warn` if there are momentary problems or it is unstable. and `fail` if the service is inaccessible.",
             "data": null,
             "dataMode": null,
@@ -431,7 +1119,7 @@
         {
             "id": "92238fe6-7846-45c1-9fba-b3863a412dd1",
             "name": "Update info user",
-            "url": "{{HOST}}\/user\/:userId",
+            "url": "{{BASEURL}}\/user\/:userId",
             "description": "",
             "data": [],
             "dataMode": "raw",
@@ -556,7 +1244,7 @@
         {
             "id": "a9a858a7-e1b3-4503-ad5c-cc3365fc2a7a",
             "name": "Refresh Token",
-            "url": "{{HOST}}\/auth\/token\/refresh",
+            "url": "{{BASEURL}}\/auth\/token\/refresh",
             "description": "Allows the re-creation of a valid access token, invalidating the previous refresh token.",
             "data": [],
             "dataMode": "raw",
@@ -590,7 +1278,7 @@
                     }
                 }
             ],
-            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
+            "folder": "99ad087e-c2e3-4997-a44a-fd75dc59080d",
             "responses": [
                 {
                     "id": "af8e2529-3730-4a2f-ac07-7cd69f3da102",
@@ -675,7 +1363,7 @@
         {
             "id": "b35a341a-bb80-41ac-9f81-604af100bad5",
             "name": "Test Token",
-            "url": "{{HOST}}\/auth\/token\/test",
+            "url": "{{BASEURL}}\/auth\/token\/test",
             "description": "**Only Development**\n\nTry and decode to `access_token`.",
             "data": null,
             "dataMode": null,
@@ -693,7 +1381,7 @@
                 ]
             },
             "events": null,
-            "folder": "4b7dc7d2-2a99-4c3b-a92a-cca8d99b3f94",
+            "folder": "99ad087e-c2e3-4997-a44a-fd75dc59080d",
             "responses": [
                 {
                     "id": "2c147eda-0ff3-460d-b7a9-68d3529a77c6",
@@ -757,41 +1445,6 @@
             },
             "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
             "pathVariables": []
-        },
-        {
-            "id": "db9283aa-b13f-415a-9666-b37e179f3d0a",
-            "name": "red",
-            "url": "{{HOST}}\/user\/:userId?eradas=das",
-            "description": "",
-            "data": null,
-            "dataMode": null,
-            "headerData": [],
-            "method": "GET",
-            "pathVariableData": [
-                {
-                    "key": "userId",
-                    "value": "me",
-                    "description": "abc"
-                }
-            ],
-            "queryParams": [
-                {
-                    "key": "eradas",
-                    "value": "das",
-                    "description": "asd",
-                    "enabled": true
-                }
-            ],
-            "auth": null,
-            "events": [],
-            "folder": null,
-            "currentHelper": null,
-            "helperAttributes": null,
-            "collectionId": "381d8ba2-ac15-40cc-abb6-22d1bb65c17b",
-            "headers": "",
-            "pathVariables": {
-                "userId": "me"
-            }
         }
     ]
 }
